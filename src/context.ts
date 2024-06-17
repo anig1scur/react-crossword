@@ -35,6 +35,7 @@ export interface CrosswordContextType {
   handleInputClick: React.MouseEventHandler<HTMLInputElement>;
   /** A handler for clue selection. */
   handleClueSelected: (direction: Direction, number: string) => void;
+
   /** Provides registration for focus actions */
   registerFocusHandler: (focusHandler: FocusHandler | null) => void;
 

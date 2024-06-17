@@ -161,6 +161,8 @@ export const crosswordProviderPropTypes = {
    */
   onCellChange: PropTypes.func,
 
+  onCellSelected: PropTypes.func,
+
   /**
    * callback function called when a clue is selected
    */
@@ -265,6 +267,16 @@ export type CrosswordProviderProps = EnhancedProps<
      */
     onCellChange?: (row: number, col: number, char: string) => void;
 
+    /* 
+    New Experimental Feature
+    */
+    onCellSelected?: (
+      direction: Direction,
+      number: string | undefined,
+      row: number,
+      col: number
+    ) => void;
+
     /**
      * callback function called when a clue is selected
      */
@@ -339,6 +351,7 @@ const CrosswordProvider = React.forwardRef<
       onCrosswordComplete,
       onCrosswordCorrect,
       onCellChange,
+      onCellSelected,
       onClueSelected,
       useStorage,
       storageKey,
@@ -626,9 +639,13 @@ const CrosswordProvider = React.forwardRef<
         setCurrentDirection(direction);
         setCurrentNumber(candidate[direction] ?? '');
 
+        if (onCellSelected) {
+          onCellSelected(direction, candidate[direction] ?? '', row, col);
+        }
+
         return candidate;
       },
-      [currentDirection, getCellData]
+      [currentDirection, getCellData, onCellSelected]
     );
 
     const moveRelative = useCallback(
@@ -714,6 +731,15 @@ const CrosswordProvider = React.forwardRef<
               setCurrentDirection(other);
               setCurrentNumber(cellData[other] ?? '');
             }
+
+            if (onCellSelected) {
+              onCellSelected(
+                other,
+                cellData[other] ?? '',
+                focusedRow,
+                focusedCol
+              );
+            }
             break;
           }
 
@@ -778,6 +804,7 @@ const CrosswordProvider = React.forwardRef<
         data,
         currentNumber,
         moveTo,
+        onCellSelected,
       ]
     );
 
@@ -886,11 +913,15 @@ const CrosswordProvider = React.forwardRef<
           }
 
           setCurrentNumber(cellData[direction] ?? '');
+
+          if (onCellSelected) {
+            onCellSelected(direction, cellData[direction] ?? '', row, col);
+          }
         }
 
         focus();
       },
-      [currentDirection, focus, focused, focusedCol, focusedRow]
+      [currentDirection, focus, focused, focusedCol, focusedRow, onCellSelected]
     );
 
     const handleInputClick = useCallback<
@@ -915,8 +946,25 @@ const CrosswordProvider = React.forwardRef<
 
         setCurrentNumber(cellData[direction] ?? '');
         focus();
+
+        if (onCellSelected) {
+          onCellSelected(
+            direction,
+            cellData[direction] ?? '',
+            focusedCol,
+            focusedRow
+          );
+        }
       },
-      [currentDirection, focus, focused, focusedCol, focusedRow, getCellData]
+      [
+        currentDirection,
+        focus,
+        focused,
+        focusedCol,
+        focusedRow,
+        getCellData,
+        onCellSelected,
+      ]
     );
 
     const handleClueSelected = useCallback(
@@ -1132,6 +1180,7 @@ CrosswordProvider.defaultProps = {
   onCrosswordComplete: undefined,
   onCrosswordCorrect: undefined,
   onCellChange: undefined,
+  onCellSelected: undefined,
   onClueSelected: undefined,
   children: undefined,
 };
