@@ -161,6 +161,13 @@ export const crosswordProviderPropTypes = {
    */
   onCellChange: PropTypes.func,
 
+  /**
+   * callback function called when a cell is selected(e.g. when the user selects a
+   * cell); called with  `(direction, number, row, cols)` arguments, where the `direction`
+   * is the current direction, `number` is the index of the clue and `row` and `col` are
+   *  the 0-based position of the cell
+   */
+
   onCellSelected: PropTypes.func,
 
   /**
