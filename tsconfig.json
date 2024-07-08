@@ -7,7 +7,7 @@
     // I'd *like* to makes this a pure ESM library, but that doesn't really play
     // nicely with React/tooling.  Fortunately, we can let Typescript manage
     // transpiling this to CJS for us.
-    "target": "es2016",
+    "target": "es2019",
     "module": "commonjs",
     "moduleResolution": "node",
     "esModuleInterop": true,

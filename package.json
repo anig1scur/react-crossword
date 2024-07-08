@@ -41,8 +41,7 @@
     "contributors:add": "all-contributors add",
     "contributors:check": "all-contributors check",
     "#snyk-protect": "snyk protect",
-    "#prepare": "npm run snyk-protect",
-    "prepare": "is-ci || husky install"
+    "#prepare": "npm run snyk-protect"
   },
   "files": [
     "/dist",
